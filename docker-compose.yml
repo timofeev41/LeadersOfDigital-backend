@@ -1,0 +1,13 @@
+version: "3.0"
+services:
+    leaders_of_digital_backend:
+        build: .
+        container_name: leaders_of_digital_backend
+        restart: always
+        command: uvicorn app:api --host 0.0.0.0 --port 8880
+        volumes:
+            - .:/usr/src/app/
+        ports:
+            - "8880:8880"
+        environment:
+            - MONGO_CONNECTION_URL="mongodb+srv://admin:dbadmin@cluster0.2iesy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
