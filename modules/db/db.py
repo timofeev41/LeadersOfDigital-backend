@@ -4,7 +4,7 @@ import typing as tp
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorCursor
 
 from modules.utils.singleton import SingletonMeta
-from modules.utils.models import EmployeeEntry, BaseModel
+from .models.models import EmployeeEntry, BaseModel
 
 
 class MongoDbWrapper(metaclass=SingletonMeta):

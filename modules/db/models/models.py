@@ -8,6 +8,7 @@ class EmployeeSex(str, Enum):
 
 
 class EmployeeEntry(BaseModel):
+    id: str
     speciality: str
     birthDate: str
     gender: EmployeeSex
