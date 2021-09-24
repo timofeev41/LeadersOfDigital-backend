@@ -22,6 +22,7 @@ class EmployeeEntry(BaseModel):
     salary: int
     city: str
     childrenCount: int
+    is_fired: bool
 
 
 class FilteringClass(BaseModel):
@@ -36,3 +37,4 @@ class FilteringClass(BaseModel):
     salary: tp.Optional[tp.Tuple[int, int]]
     city: tp.Optional[str]
     childrenCount: tp.Optional[int]
+    is_fired: tp.Optional[bool]

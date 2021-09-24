@@ -22,8 +22,7 @@ class MongoDbWrapper(metaclass=SingletonMeta):
 
         self._database: AsyncIOMotorCursor = mongo_client["Hack"]
 
-        # self._employees_data = self._database["Employees"]
-        self._employees_data: AsyncIOMotorCollection = self._database["Testing"]
+        self._employees_data: AsyncIOMotorCollection = self._database["Employees_12"]
 
     @staticmethod
     async def _remove_ids(cursor: AsyncIOMotorCursor) -> tp.List[tp.Dict[str, tp.Any]]:
@@ -35,13 +34,17 @@ class MongoDbWrapper(metaclass=SingletonMeta):
         return result
 
     @staticmethod
-    async def _get_element_by_key(collection_: AsyncIOMotorCollection, key: str, value: str) -> tp.Dict[str, tp.Any]:
-        result: tp.Dict[str, tp.Any] = await collection_.find_one({key: value}, {"_id": 0})
+    async def _filter_elements_by_keys(collection_: AsyncIOMotorCollection, filter: tp.Dict[str, tp.Any]) -> AsyncIOMotorCursor:
+        result: tp.Dict[str, tp.Any] = await collection_.find(filter)
         return result
 
     async def _execute_all_from_collection(self, collection_: AsyncIOMotorCollection) -> tp.List[tp.Dict[str, tp.Any]]:
         cursor = collection_.find()
         return await self._remove_ids(cursor)
 
-    async def push_to_collection(self, data: tp.List[tp.Dict[str, tp.Any]]) -> None:
+    async def push_employee_to_collection(self, data: tp.List[tp.Dict[str, tp.Any]]) -> None:
         await self._employees_data.insert_many(data)
+
+    async def filter_employees(self, filter: tp.Dict[str, tp.Any]) -> tp.List[tp.Dict[str, tp.Any]]:
+        cursor: AsyncIOMotorCursor = await self._filter_elements_by_keys(self._employees_data, filter)
+        return await self._remove_ids(cursor)
