@@ -30,7 +30,7 @@ async def create_employee(employee: EmployeeEntry):
 
 @api.patch("/api/upload")
 async def add_education():
-    await MongoDbWrapper().update_employee()
+    pass
 
 
 @api.patch("/api/employee")

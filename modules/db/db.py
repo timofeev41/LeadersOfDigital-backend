@@ -6,7 +6,7 @@ import typing as tp
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorCursor
 
 from modules.utils.singleton import SingletonMeta
-from .models.models import EmployeeEntry, BaseModel, BaseFilter
+from .models.models import EmployeeEntry, BaseModel, BaseFilter, StartDateFilter, BirthDateFilter, EndDateFilter
 from modules.utils.utils import normalize_date
 
 
@@ -58,6 +58,10 @@ class MongoDbWrapper(metaclass=SingletonMeta):
             if value is None:
                 continue
             if isinstance(value, BaseFilter):
+                if isinstance(value, (BirthDateFilter, StartDateFilter, EndDateFilter)):
+                    print(value)
+                    clean_filter[key] = {"$gte": normalize_date(value.start), "$lte": normalize_date(value.end)}
+                    continue
                 clean_filter[key] = {"$gte": value.start, "$lte": value.end}
                 continue
             clean_filter[key] = value
@@ -76,3 +80,8 @@ class MongoDbWrapper(metaclass=SingletonMeta):
 
     async def update_employee(self, key: str, value: str, new_value: str):
         await self._employees_data.update_one({key: value}, {"$set": {key: new_value}})
+
+    async def _update_everywhere(self, key: str, value: str):
+        data = await self._execute_all_from_collection(self._employees_data)
+        for doc in data:
+            await self._employees_data.update_one({"id": doc["id"]}, {"$set": {key: value}})
