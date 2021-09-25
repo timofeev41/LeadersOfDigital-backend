@@ -30,6 +30,7 @@ class EmployeeEntry(BaseModel):
     childrenCount: int
     is_fired: bool
     education: EmployeeEducation
+    mentored: bool
 
 
 class BaseFilter(BaseModel):
@@ -68,3 +69,4 @@ class FilteringClass(BaseModel):
     childrenCount: tp.Optional[int]
     is_fired: tp.Optional[bool]
     education: tp.Optional[EmployeeEducation]
+    mentored: tp.Optional[bool]
