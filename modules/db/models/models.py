@@ -50,7 +50,8 @@ class EndDateFilter(BaseFilter):
 
 
 class SalaryFilter(BaseFilter):
-    pass
+    start: int
+    end: int
 
 
 class FilteringClass(BaseModel):

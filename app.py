@@ -30,8 +30,8 @@ async def get_employees():
 @api.post("/api/employees/filter")
 async def filter_employees(filter: FilteringClass):
     result = await MongoDbWrapper().get_matching_employees(dict(filter))
-    predictions = BaseClassifier.predict(result)
-    return [(result[i], predictions[i]) for i in range(len(result))]
+    predictions: tp.List[int] = BaseClassifier().predict([EmployeeEntry(**_) for _ in result])
+    return [{"employee": result[i], "prediction": predictions[i]} for i in range(len(result))]
 
 
 @api.post("/api/employees")

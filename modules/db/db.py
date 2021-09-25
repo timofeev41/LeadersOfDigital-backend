@@ -1,10 +1,11 @@
+import logging
 import os
 import typing as tp
 
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorCursor
 
 from modules.utils.singleton import SingletonMeta
-from .models.models import EmployeeEntry, BaseModel
+from .models.models import EmployeeEntry, BaseModel, BaseFilter
 
 
 class MongoDbWrapper(metaclass=SingletonMeta):
@@ -35,9 +36,9 @@ class MongoDbWrapper(metaclass=SingletonMeta):
 
     @staticmethod
     async def _filter_elements_by_keys(
-        collection_: AsyncIOMotorCollection, filter: tp.Dict[str, tp.Any]
+        collection_: AsyncIOMotorCollection, filter_: tp.Dict[str, tp.Any]
     ) -> AsyncIOMotorCursor:
-        cursor: AsyncIOMotorCursor = collection_.find(filter)
+        cursor: AsyncIOMotorCursor = collection_.find(filter_)
         return cursor
 
     async def _execute_all_from_collection(self, collection_: AsyncIOMotorCollection) -> tp.List[tp.Dict[str, tp.Any]]:
@@ -46,19 +47,23 @@ class MongoDbWrapper(metaclass=SingletonMeta):
 
     @staticmethod
     async def _clear_filter(filter_: tp.Dict[str, tp.Any]) -> tp.Dict[str, tp.Any]:
-        new_filter = filter_.copy()
-        for key, value in new_filter.items():
+        clean_filter = {}
+        for key, value in filter_.items():
             if value is None:
-                del new_filter[key]
-        return new_filter
+                continue
+            if isinstance(value, BaseFilter):
+                clean_filter[key] = {"$gte": value.start, "$lte": value.end}
+                continue
+            clean_filter[key] = value
+        return clean_filter
 
     async def push_employee_to_collection(self, data: tp.List[tp.Dict[str, tp.Any]]) -> None:
         await self._employees_data.insert_many(data)
 
     async def get_matching_employees(self, filter_: tp.Dict[str, tp.Any]) -> tp.List[tp.Dict[str, tp.Any]]:
         clean_filter = await self._clear_filter(filter_)
-        cursor: AsyncIOMotorCursor = await self._filter_elements_by_keys(self._employees_data, clean_filter)
+        cursor = await self._filter_elements_by_keys(self._employees_data, clean_filter)
         return await self._remove_ids(cursor)
 
-    async def get_all_employees(self):
+    async def get_all_employees(self) -> tp.List[tp.Dict[str, tp.Any]]:
         return await self._execute_all_from_collection(self._employees_data)
