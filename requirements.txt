@@ -4,3 +4,7 @@ uvicorn
 loguru
 dnspython
 mypy
+pandas
+sklearn
+numpy
+joblib
