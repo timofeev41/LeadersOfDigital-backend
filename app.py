@@ -10,9 +10,17 @@ from starlette.middleware.cors import CORSMiddleware
 
 api = FastAPI()
 
+headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Content-Type": "application/json; charset=utf-8",
+}
+
+
 api.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost", "http://civiltechgroup.ru:8880"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
