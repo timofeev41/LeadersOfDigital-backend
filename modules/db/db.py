@@ -6,6 +6,7 @@ from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, Asyn
 
 from modules.utils.singleton import SingletonMeta
 from .models.models import EmployeeEntry, BaseModel, BaseFilter
+from modules.utils.utils import normalize_date
 
 
 class MongoDbWrapper(metaclass=SingletonMeta):
@@ -23,15 +24,19 @@ class MongoDbWrapper(metaclass=SingletonMeta):
 
         self._database: AsyncIOMotorCursor = mongo_client["Hack"]
 
-        self._employees_data: AsyncIOMotorCollection = self._database["Employees_12"]
+        # self._employees_data: AsyncIOMotorCollection = self._database["Employees_12"]
+        self._employees_data: AsyncIOMotorCollection = self._database["Employees_latest"]
 
     @staticmethod
     async def _remove_ids(cursor: AsyncIOMotorCursor) -> tp.List[tp.Dict[str, tp.Any]]:
         """remove all MongoDB specific IDs from the resulting documents"""
         result: tp.List[tp.Dict[str, tp.Any]] = []
-        for doc in await cursor.to_list(length=100):
+        for doc in await cursor.to_list(length=4000):
             del doc["_id"]
-            result.append(doc)
+            data = doc.copy()
+            data["birthDate"] = normalize_date(data["birthDate"])
+            data["startDate"] = normalize_date(data["startDate"])
+            result.append(data)
         return result
 
     @staticmethod

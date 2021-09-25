@@ -23,8 +23,9 @@ fake_data = [
 
 
 @api.get("/api/employees")
-async def get_employees():
-    return await MongoDbWrapper().get_all_employees()
+async def get_employees(count: int = 100):
+    employees = await MongoDbWrapper().get_all_employees()
+    return employees[:100]
 
 
 @api.post("/api/employees/filter")
