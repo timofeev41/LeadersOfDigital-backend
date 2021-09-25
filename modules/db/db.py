@@ -34,17 +34,31 @@ class MongoDbWrapper(metaclass=SingletonMeta):
         return result
 
     @staticmethod
-    async def _filter_elements_by_keys(collection_: AsyncIOMotorCollection, filter: tp.Dict[str, tp.Any]) -> AsyncIOMotorCursor:
-        result: tp.Dict[str, tp.Any] = await collection_.find(filter)
-        return result
+    async def _filter_elements_by_keys(
+        collection_: AsyncIOMotorCollection, filter: tp.Dict[str, tp.Any]
+    ) -> AsyncIOMotorCursor:
+        cursor: AsyncIOMotorCursor = collection_.find(filter)
+        return cursor
 
     async def _execute_all_from_collection(self, collection_: AsyncIOMotorCollection) -> tp.List[tp.Dict[str, tp.Any]]:
         cursor = collection_.find()
         return await self._remove_ids(cursor)
 
+    @staticmethod
+    async def _clear_filter(filter_: tp.Dict[str, tp.Any]) -> tp.Dict[str, tp.Any]:
+        new_filter = filter_.copy()
+        for key, value in new_filter.items():
+            if value is None:
+                del new_filter[key]
+        return new_filter
+
     async def push_employee_to_collection(self, data: tp.List[tp.Dict[str, tp.Any]]) -> None:
         await self._employees_data.insert_many(data)
 
-    async def filter_employees(self, filter: tp.Dict[str, tp.Any]) -> tp.List[tp.Dict[str, tp.Any]]:
-        cursor: AsyncIOMotorCursor = await self._filter_elements_by_keys(self._employees_data, filter)
+    async def get_matching_employees(self, filter_: tp.Dict[str, tp.Any]) -> tp.List[tp.Dict[str, tp.Any]]:
+        clean_filter = await self._clear_filter(filter_)
+        cursor: AsyncIOMotorCursor = await self._filter_elements_by_keys(self._employees_data, clean_filter)
         return await self._remove_ids(cursor)
+
+    async def get_all_employees(self):
+        return await self._execute_all_from_collection(self._employees_data)

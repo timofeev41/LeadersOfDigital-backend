@@ -25,16 +25,37 @@ class EmployeeEntry(BaseModel):
     is_fired: bool
 
 
+class BaseFilter(BaseModel):
+    start: str
+    end: str
+
+
+class BirthDateFilter(BaseFilter):
+    pass
+
+
+class StartDateFilter(BaseFilter):
+    pass
+
+
+class EndDateFilter(BaseFilter):
+    pass
+
+
+class SalaryFilter(BaseFilter):
+    pass
+
+
 class FilteringClass(BaseModel):
     speciality: tp.Optional[str]
-    birthDate: tp.Optional[tp.Tuple[str, str]]
+    birthDate: tp.Optional[BirthDateFilter]
     gender: tp.Optional[EmployeeSex]
     is_married: tp.Optional[bool]
-    startDate: tp.Optional[tp.Tuple[str, str]]
-    endDate: tp.Optional[tp.Tuple[str, str]]
+    startDate: tp.Optional[StartDateFilter]
+    endDate: tp.Optional[EndDateFilter]
     absenceReason: tp.Optional[str]
     absenceDays: tp.Optional[str]
-    salary: tp.Optional[tp.Tuple[int, int]]
+    salary: tp.Optional[SalaryFilter]
     city: tp.Optional[str]
     childrenCount: tp.Optional[int]
     is_fired: tp.Optional[bool]

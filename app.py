@@ -22,9 +22,13 @@ fake_data = [
 
 
 @api.get("/api/employees")
+async def get_employees():
+    return await MongoDbWrapper().get_all_employees()
+
+
+@api.post("/api/employees/filter")
 async def filter_employees(filter: FilteringClass):
-    await MongoDbWrapper().
-    return result
+    return await MongoDbWrapper().get_matching_employees(dict(filter))
 
 
 @api.post("/api/employees")
@@ -32,3 +36,8 @@ async def create_employee(employee: EmployeeEntry):
     data = dict(employee)
     fake_data.append(data)
     return data
+
+
+@api.patch("/api/employee")
+async def patch_employee_data(employee_id: str, new_data: EmployeeEntry):
+    pass
