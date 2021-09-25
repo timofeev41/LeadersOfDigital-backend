@@ -5,8 +5,18 @@ from fastapi import FastAPI
 from modules.db.db import MongoDbWrapper
 from modules.db.models.models import FilteringClass, EmployeeEntry
 from modules.utils.ml import BaseClassifier
+from fastapi.middleware.cors import CORSMiddleware
 
 api = FastAPI()
+
+
+api.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @api.get("/api/employees")
