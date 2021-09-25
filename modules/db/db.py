@@ -7,7 +7,7 @@ from datetime import datetime
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorCursor
 
 from modules.utils.singleton import SingletonMeta
-from .models.models import BaseFilter, StartDateFilter, BirthDateFilter, EndDateFilter
+from .models.models import BaseFilter, StartDateFilter, BirthDateFilter, EndDateFilter, EmployeeEducation
 
 
 class MongoDbWrapper(metaclass=SingletonMeta):
@@ -53,21 +53,32 @@ class MongoDbWrapper(metaclass=SingletonMeta):
 
     @staticmethod
     async def _clear_filter(filter_: tp.Dict[str, tp.Any]) -> tp.Dict[str, tp.Any]:
-        clean_filter = {}
-        for key, value in filter_.items():
-            if value is None:
+        clean_filter: tp.Dict[tp.Any, tp.Any] = {}
+        for key, value_ in filter_.items():
+            if value_ is None:
                 continue
-            if isinstance(value, BaseFilter):
-                if isinstance(value, (BirthDateFilter, StartDateFilter, EndDateFilter)):
-                    print(value)
+            if isinstance(value_, BaseFilter):
+                # Check if instance is Pydantic's filter Model
+                if isinstance(value_, (BirthDateFilter, StartDateFilter, EndDateFilter)):
+                    # Check if instance is Pydantic's between filter Model
+                    print(value_)
                     clean_filter[key] = {
-                        "$gte": datetime.fromisoformat(value.start),
-                        "$lte": datetime.fromisoformat(value.end),
+                        "$gte": datetime.fromisoformat(value_.start),
+                        "$lte": datetime.fromisoformat(value_.end),
                     }
                     continue
-                clean_filter[key] = {"$gte": value.start, "$lte": value.end}
+                clean_filter[key] = {"$gte": value_.start, "$lte": value_.end}
                 continue
-            clean_filter[key] = value
+            if isinstance(value_, list):
+                # Check if instance is multiple choice field
+                if isinstance(value_, EmployeeEducation):
+                    # check if instance if a list of education level enums
+                    clean_filter[key] = {"$in": [value_.value for _ in value_]}
+                    continue
+                clean_filter[key] = {"$in": value_}
+                continue
+            clean_filter[key] = value_
+        print(clean_filter)
         return clean_filter
 
     async def push_employee_to_collection(self, data: tp.List[tp.Dict[str, tp.Any]]) -> None:
@@ -81,10 +92,10 @@ class MongoDbWrapper(metaclass=SingletonMeta):
     async def get_all_employees(self) -> tp.List[tp.Dict[str, tp.Any]]:
         return await self._execute_all_from_collection(self._employees_data)
 
-    async def update_employee(self, key: str, value: str, new_value: str):
+    async def update_employee(self, key: str, value: str, new_value: str) -> None:
         await self._employees_data.update_one({key: value}, {"$set": {key: new_value}})
 
-    async def _update_everywhere(self, key: str, value: str):
+    async def _update_everywhere(self, key: str, value: str) -> None:
         data = await self._execute_all_from_collection(self._employees_data)
         for doc in data:
             await self._employees_data.update_one({"id": doc["id"]}, {"$set": {key: value}})

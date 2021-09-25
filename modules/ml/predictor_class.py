@@ -40,8 +40,7 @@ class Analitics:
 
 # df = pd.read_csv('Данные для аналитики2.txt', encoding='utf-16', sep = "\t", index_col='ID')
 # cl = Analitics(X=df)
-if __name__ == "__main__":
-
-    # employees = [instance, instance2, instance3]
-    predictor = Analitics(employees)
-    print(predictor.predict())
+# if __name__ == "__main__":
+# employees = [instance, instance2, instance3]
+# predictor = Analitics(employees)
+# print(predictor.predict())

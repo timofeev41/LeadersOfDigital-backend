@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestRegressor
 from joblib import dump
 
 
-def season(x):
+def season(x: int) -> str:
     if x in (1, 2, 12):
         return "win"
     elif x in (3, 4, 5):
@@ -97,4 +97,4 @@ if __name__ == "__main__":
     """
 
     # employees = [instance, instance2, instance3]
-    train(employees)
+    # train(employees)
