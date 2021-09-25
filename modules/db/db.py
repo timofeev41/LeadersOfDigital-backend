@@ -7,8 +7,7 @@ from datetime import datetime
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorCursor
 
 from modules.utils.singleton import SingletonMeta
-from .models.models import EmployeeEntry, BaseModel, BaseFilter, StartDateFilter, BirthDateFilter, EndDateFilter
-from modules.utils.utils import normalize_date
+from .models.models import BaseFilter, StartDateFilter, BirthDateFilter, EndDateFilter
 
 
 class MongoDbWrapper(metaclass=SingletonMeta):
