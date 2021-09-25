@@ -2,6 +2,7 @@ import logging
 import os
 import random
 import typing as tp
+from datetime import datetime
 
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorCursor
 
@@ -35,8 +36,8 @@ class MongoDbWrapper(metaclass=SingletonMeta):
         for doc in await cursor.to_list(length=4000):
             del doc["_id"]
             data = doc.copy()
-            data["birthDate"] = normalize_date(data["birthDate"])
-            data["startDate"] = normalize_date(data["startDate"])
+            data["birthDate"] = data["birthDate"]
+            data["startDate"] = data["startDate"]
             result.append(data)
         return result
 
@@ -60,7 +61,10 @@ class MongoDbWrapper(metaclass=SingletonMeta):
             if isinstance(value, BaseFilter):
                 if isinstance(value, (BirthDateFilter, StartDateFilter, EndDateFilter)):
                     print(value)
-                    clean_filter[key] = {"$gte": normalize_date(value.start), "$lte": normalize_date(value.end)}
+                    clean_filter[key] = {
+                        "$gte": datetime.fromisoformat(value.start),
+                        "$lte": datetime.fromisoformat(value.end),
+                    }
                     continue
                 clean_filter[key] = {"$gte": value.start, "$lte": value.end}
                 continue
