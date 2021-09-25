@@ -20,7 +20,7 @@ class EmployeeEntry():
                  city,
                  childrenCount,
                  is_fired,
-                 mentors,
+                 mentored,
                  ):
         self.id = id
         self.speciality = speciality
@@ -36,7 +36,7 @@ class EmployeeEntry():
         self.city = city
         self.childrenCount = childrenCount
         self.is_fired = is_fired
-        self.mentors = mentors
+        self.mentored = mentored
 
 
 class Analitics:
@@ -73,66 +73,8 @@ class Analitics:
 
 # df = pd.read_csv('Данные для аналитики2.txt', encoding='utf-16', sep = "\t", index_col='ID')
 # cl = Analitics(X=df)
-if __name__ == "__main__":
-    instance = EmployeeEntry(id=108,
-                             speciality='Ведущий инженер',
-                             birthDate='02/07/2002',
-                             education='school',
-                             gender="male",
-                             is_married=True,
-                             startDate='10/10/2021',
-                             endDate='15/10/2024',
-                             absenceReason=None,
-                             absenceDays=None,
-                             salary=38900,
-                             city='Москва',
-                             childrenCount=2,
-                             is_fired=True,
-                             mentors=False
 
-                             )
-    instance2 = EmployeeEntry(id=101,
-                              speciality='Уборщик',
-                              birthDate='02/07/2002',
-                              education='higher',
-                              gender="female",
-                              is_married=True,
-                              startDate='10/10/2021',
-                              endDate='10/10/2022',
-                              absenceReason='Ilness',
-                              absenceDays=2,
-                              salary=3900,
-                              city='Москва',
-                              childrenCount=2,
-                              is_fired=True,
-                              mentors=True
-
-                              )
-
-    instance3 = EmployeeEntry(id=102,
-                              speciality='Уборщик',
-                              birthDate='02/07/2002',
-                              education='college',
-                              gender="female",
-                              is_married=False,
-                              startDate='10/10/2021',
-                              endDate='10/10/2023',
-                              absenceReason='Holiday',
-                              absenceDays=5,
-                              salary=18000,
-                              city='Припять',
-                              childrenCount=10,
-                              is_fired=True,
-                              mentors=False
-
-                              )
-
-
-
-
-
-    employees = [instance, instance2, instance3]
-    predictor = Analitics(employees)
-
-
-    print(predictor.predict())
+# if __name__ == "__main__":
+# employees = [instance, instance2, instance3]
+# predictor = Analitics(employees)
+# print(predictor.predict())

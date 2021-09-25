@@ -56,18 +56,28 @@ class SalaryFilter(BaseFilter):
     end: int
 
 
+class ChildrenFilter(BaseFilter):
+    start: int
+    end: int
+
+
+class AbsenceFilter(BaseFilter):
+    start: int
+    end: int
+
+
 class FilteringClass(BaseModel):
-    speciality: tp.Optional[str]
+    speciality: tp.Optional[tp.List[str]]
     birthDate: tp.Optional[BirthDateFilter]
     gender: tp.Optional[EmployeeSex]
     is_married: tp.Optional[bool]
     startDate: tp.Optional[StartDateFilter]
     endDate: tp.Optional[EndDateFilter]
     absenceReason: tp.Optional[str]
-    absenceDays: tp.Optional[int]
+    absenceDays: tp.Optional[AbsenceFilter]
     salary: tp.Optional[SalaryFilter]
-    city: tp.Optional[str]
-    childrenCount: tp.Optional[int]
+    city: tp.Optional[tp.List[str]]
+    childrenCount: tp.Optional[ChildrenFilter]
     is_fired: tp.Optional[bool]
-    education: tp.Optional[EmployeeEducation]
+    education: tp.Optional[tp.List[EmployeeEducation]]
     mentored: tp.Optional[bool]

@@ -6,7 +6,7 @@ from joblib import dump
 
 
 
-def season(x):
+def season(x: int) -> str:
     if x in (1, 2, 12):
         return "win"
     elif x in (3, 4, 5):
@@ -38,8 +38,10 @@ def preprocess(df):
 
     features_hot = ["speciality", "absenceReason", "season"]
     features_ord = ["education", "gender"]
-    df = pd.get_dummies(df, columns=features_hot + features_ord, sparse=False, drop_first=True)
-    features_bool = ["is_married", "mentors"]
+    # df = pd.get_dummies(df, columns=features_hot + features_ord, sparse=False, drop_first=True)
+    for i in features_hot+features_ord:
+        df[i] = pd.factorize(df[i])[0]
+    features_bool = ["is_married", "mentored"]
     df[features_bool] = df[features_bool].astype(int)
     df["city"] = df.city.replace("Москва", 1)
     df.loc[df["city"] != 1, "city"] = 0
@@ -67,97 +69,6 @@ def train(employees):
 
 
 if __name__ == "__main__":
-
-    class EmployeeEntry():
-        def __init__(self,
-                     id,
-                     speciality,
-                     birthDate,
-                     education,
-                     gender,
-                     is_married,
-                     startDate,
-                     endDate,
-                     absenceReason,
-                     absenceDays,
-                     salary,
-                     city,
-                     childrenCount,
-                     is_fired,
-                     mentors,
-                     ):
-            self.id = id
-            self.speciality = speciality
-            self.birthDate = birthDate
-            self.education = education
-            self.gender = gender
-            self.is_married = is_married
-            self.startDate = startDate
-            self.endDate = endDate
-            self.absenceReason = absenceReason
-            self.absenceDays = absenceDays
-            self.salary = salary
-            self.city = city
-            self.childrenCount = childrenCount
-            self.is_fired = is_fired
-            self.mentors = mentors
-
-
-
-    instance = EmployeeEntry(id=100,
-                             speciality='Ведущий инженер',
-                             birthDate='02/07/2002',
-                             education='school',
-                             gender="male",
-                             is_married=True,
-                             startDate='10/10/2021',
-                             endDate='10/10/2024',
-                             absenceReason=None,
-                             absenceDays=None,
-                             salary=38900,
-                             city='Москва',
-                             childrenCount=2,
-                             is_fired=True,
-                             mentors=False
-
-                             )
-    instance2 = EmployeeEntry(id=101,
-                              speciality='Уборщик',
-                              birthDate='02/07/2002',
-                              education='higher',
-                              gender="female",
-                              is_married=True,
-                              startDate='10/10/2021',
-                              endDate='10/10/2022',
-                              absenceReason='Ilness',
-                              absenceDays=2,
-                              salary=38900,
-                              city='Москва',
-                              childrenCount=2,
-                              is_fired=True,
-                              mentors=True
-
-                              )
-
-    instance3 = EmployeeEntry(id=102,
-                              speciality='Уборщик',
-                              birthDate='02/07/2002',
-                              education='college',
-                              gender="female",
-                              is_married=False,
-                              startDate='10/10/2021',
-                              endDate='10/10/2023',
-                              absenceReason='Holiday',
-                              absenceDays=5,
-                              salary=38900,
-                              city='Припять',
-                              childrenCount=10,
-                              is_fired=True,
-                              mentors=False
-
-                              )
-    employees = [instance, instance2, instance3]
-
-    employees = [instance, instance2, instance3]
     train(employees)
+
 
