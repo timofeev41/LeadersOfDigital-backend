@@ -1,5 +1,6 @@
 import logging
 import os
+import random
 import typing as tp
 
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorCollection, AsyncIOMotorCursor
@@ -72,3 +73,10 @@ class MongoDbWrapper(metaclass=SingletonMeta):
 
     async def get_all_employees(self) -> tp.List[tp.Dict[str, tp.Any]]:
         return await self._execute_all_from_collection(self._employees_data)
+
+    async def update_employee(self, key: str = None, value: str = None):
+        data = await self._execute_all_from_collection(self._employees_data)
+        for doc in data:
+            await self._employees_data.update_one(
+                {"id": doc["id"]}, {"$set": {"education": random.choice(["college", "higher", "school"])}}
+            )
