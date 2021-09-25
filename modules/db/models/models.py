@@ -9,6 +9,12 @@ class EmployeeSex(str, Enum):
     female = "female"
 
 
+class EmployeeEducation(str, Enum):
+    higher = "высшее"
+    collage = "колледж"
+    school = "шкила"
+
+
 class EmployeeEntry(BaseModel):
     id: str
     speciality: str
@@ -23,6 +29,7 @@ class EmployeeEntry(BaseModel):
     city: str
     childrenCount: int
     is_fired: bool
+    education: EmployeeEducation
 
 
 class BaseFilter(BaseModel):
