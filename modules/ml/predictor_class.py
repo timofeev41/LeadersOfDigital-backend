@@ -1,7 +1,8 @@
 from joblib import load
 import pandas as pd
 import numpy as np
-#from .training import preprocess
+
+# from .training import preprocess
 from training import preprocess
 
 # some_data_passed
@@ -37,8 +38,6 @@ class Analitics:
         ).apply(lambda x: max(x, 0))
 
         return left_days.values
-
-
 
 
 predictor = Analitics(employees)
