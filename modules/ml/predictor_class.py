@@ -36,4 +36,3 @@ class Analitics:
         ).apply(lambda x: max(x, 0))
 
         return left_days
-

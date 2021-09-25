@@ -14,7 +14,7 @@ api = FastAPI()
 
 api.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost", "http://civiltechgroup.ru:8880"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -41,13 +41,8 @@ async def create_employee(employee: EmployeeEntry) -> tp.Dict[str, bool]:
     return {"status": True}
 
 
-@api.patch("/api/upload")
-async def add_education() -> tp.NoReturn:
-    pass
-
-
 @api.get("/train")
-async def trainer() -> tp.Dict[str, bool]:
+async def train_model() -> tp.Dict[str, bool]:
     employees = await MongoDbWrapper().get_all_employees()
     train([EmployeeEntry(**_) for _ in employees])
     return {"status": True}

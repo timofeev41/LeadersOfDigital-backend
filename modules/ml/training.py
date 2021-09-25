@@ -31,7 +31,7 @@ def preprocess(df):
 
     features_hot = ["speciality", "absenceReason", "season"]
     features_ord = ["education", "gender"]
-    for i in features_hot+features_ord:
+    for i in features_hot + features_ord:
         df[i] = pd.factorize(df[i])[0]
     features_bool = ["is_married", "mentored"]
     df[features_bool] = df[features_bool].astype(int)
