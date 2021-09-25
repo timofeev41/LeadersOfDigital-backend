@@ -51,17 +51,17 @@ class EndDateFilter(BaseFilter):
     pass
 
 
-class SalaryFilter(BaseModel):
+class SalaryFilter(BaseFilter):
     start: int
     end: int
 
 
-class ChildrenFilter(BaseModel):
+class ChildrenFilter(BaseFilter):
     start: int
     end: int
 
 
-class AbsenceFilter(BaseModel):
+class AbsenceFilter(BaseFilter):
     start: int
     end: int
 
