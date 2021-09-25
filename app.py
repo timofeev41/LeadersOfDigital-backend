@@ -2,6 +2,8 @@ import typing as tp
 
 from fastapi import FastAPI
 
+from modules.utils.ml import BaseClassifier
+
 api = FastAPI()
 
 fake_data = [
@@ -26,7 +28,8 @@ async def filter_employees(start: tp.Optional[int], end: tp.Optional[int]):
     for data in fake_data:
         if start <= data["salary"] <= end:
             result.append(data)
-    return result
+    predictions = BaseClassifier.predict(result)
+    return [(result[i], predictions[i]) for i in range(len(result))]
 
 
 @api.post("/api/employees")
