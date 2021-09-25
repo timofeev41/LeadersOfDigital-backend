@@ -2,6 +2,10 @@ import typing as tp
 
 from fastapi import FastAPI
 
+from modules.db.db import MongoDbWrapper
+from modules.db.models.models import FilteringClass, EmployeeEntry
+from modules.utils.ml import BaseClassifier
+
 api = FastAPI()
 
 fake_data = [
