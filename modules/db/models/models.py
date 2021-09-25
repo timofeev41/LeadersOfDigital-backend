@@ -77,7 +77,7 @@ class FilteringClass(BaseModel):
     absenceDays: tp.Optional[AbsenceFilter]
     salary: tp.Optional[SalaryFilter]
     city: tp.Optional[tp.List[str]]
-    childrenCount: tp.Optional[tp.Union[ChildrenFilter, int]]
+    childrenCount: tp.Optional[ChildrenFilter]
     is_fired: tp.Optional[bool]
     education: tp.Optional[tp.List[EmployeeEducation]]
     mentored: tp.Optional[bool]
