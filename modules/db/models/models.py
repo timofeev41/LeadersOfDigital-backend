@@ -1,3 +1,4 @@
+import datetime
 import typing as tp
 
 from pydantic import BaseModel
@@ -18,11 +19,11 @@ class EmployeeEducation(str, Enum):
 class EmployeeEntry(BaseModel):
     id: str
     speciality: str
-    birthDate: str
+    birthDate: datetime.datetime
     gender: EmployeeSex
     is_married: bool
-    startDate: str
-    endDate: tp.Optional[str]
+    startDate: datetime.datetime
+    endDate: tp.Optional[datetime.datetime]
     absenceReason: tp.Optional[str]
     absenceDays: tp.Optional[int]
     salary: int

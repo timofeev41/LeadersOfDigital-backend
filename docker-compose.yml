@@ -10,4 +10,4 @@ services:
         ports:
             - "8880:8880"
         environment:
-            - MONGO_CONNECTION_URL="mongodb+srv://admin:dbadmin@cluster0.2iesy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+            - MONGO_CONNECTION_URL=mongodb+srv://admin:dbadmin@cluster0.2iesy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
