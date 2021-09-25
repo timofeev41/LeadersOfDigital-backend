@@ -1,7 +1,7 @@
 from joblib import load
 import pandas as pd
 import numpy as np
-from .training import preprocess
+from training import preprocess
 
 
 class Analitics:
@@ -39,7 +39,8 @@ class Analitics:
 # df = pd.read_csv('Данные для аналитики2.txt', encoding='utf-16', sep = "\t", index_col='ID')
 # cl = Analitics(X=df)
 if __name__ == "__main__":
+    predictor = Analitics(employees)
 
     # employees = [instance, instance2, instance3]
-    predictor = Analitics(employees)
-    print(predictor.predict())
+
+    predictor.predict()
