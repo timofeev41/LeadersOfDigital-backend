@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from modules.db.db import MongoDbWrapper
 from modules.db.models.models import FilteringClass, EmployeeEntry
 from modules.utils.ml import BaseClassifier
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
 
 api = FastAPI()
 
