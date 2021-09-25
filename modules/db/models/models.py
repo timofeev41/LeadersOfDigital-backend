@@ -10,9 +10,9 @@ class EmployeeSex(str, Enum):
 
 
 class EmployeeEducation(str, Enum):
-    higher = "высшее"
-    collage = "колледж"
-    school = "шкила"
+    higher = "higher"
+    college = "college"
+    school = "school"
 
 
 class EmployeeEntry(BaseModel):
