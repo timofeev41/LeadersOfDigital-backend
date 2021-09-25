@@ -72,3 +72,42 @@ if __name__ == "__main__":
     train(employees)
 
 
+
+    """
+    class EmployeeEntry():
+        def __init__(self,
+                     id,
+                     speciality,
+                     age,
+                     education,
+                     gender,
+                     is_married,
+                     startDate,
+                     endDate,
+                     absenceReason,
+                     absenceDays,
+                     salary,
+                     city,
+                     childrenCount,
+                     is_fired,
+                     mentored,
+                     ):
+            self.id = id
+            self.speciality = speciality
+            self.age = age
+            self.education = education
+            self.gender = gender
+            self.is_married = is_married
+            self.startDate = startDate
+            self.endDate = endDate
+            self.absenceReason = absenceReason
+            self.absenceDays = absenceDays
+            self.salary = salary
+            self.city = city
+            self.childrenCount = childrenCount
+            self.is_fired = is_fired
+            self.mentored = mentored
+    """
+
+    # employees = [instance, instance2, instance3]
+    # train(employees)
