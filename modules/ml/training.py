@@ -2,8 +2,6 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from joblib import dump
-# from modules.utils.utils import normalize_date
-
 
 
 def season(x: int) -> str:
@@ -19,8 +17,6 @@ def season(x: int) -> str:
 
 def preprocess(df):
     # даты
-
-    df.drop('is_fired', axis=1, inplace=True)
     dates_features = ["startDate", "endDate", "birthDate"]
 
     for i in dates_features:
@@ -28,9 +24,6 @@ def preprocess(df):
         df[i] = pd.to_datetime(df[i], format="%d/%m/%Y")
     df["season"] = df["endDate"].dt.month.apply(lambda x: season(x))
     df["workingPeriod"] = (df["endDate"] - df["startDate"]).dt.days
-
-
-
     df.drop(dates_features, axis=1, inplace=True)
 
     df.absenceDays.fillna(0, inplace=True)
@@ -38,7 +31,6 @@ def preprocess(df):
 
     features_hot = ["speciality", "absenceReason", "season"]
     features_ord = ["education", "gender"]
-    # df = pd.get_dummies(df, columns=features_hot + features_ord, sparse=False, drop_first=True)
     for i in features_hot+features_ord:
         df[i] = pd.factorize(df[i])[0]
     features_bool = ["is_married", "mentored"]
@@ -69,10 +61,6 @@ def train(employees):
 
 
 if __name__ == "__main__":
-    train(employees)
-
-
-
     """
     class EmployeeEntry():
         def __init__(self,
