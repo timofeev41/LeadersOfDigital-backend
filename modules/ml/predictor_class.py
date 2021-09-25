@@ -3,8 +3,6 @@ import pandas as pd
 import numpy as np
 from training import preprocess
 
-# some_data_passed
-
 
 
 class Analitics():

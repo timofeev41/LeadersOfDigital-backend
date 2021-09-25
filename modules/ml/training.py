@@ -2,6 +2,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from joblib import dump
+# from modules.utils.utils import normalize_date
+
 
 def season(x):
   if x in (1,2,12):
@@ -15,14 +17,16 @@ def season(x):
 
 def preprocess(df):
     # даты
-    dates_features = ['startDate', 'endDate']
+    df.drop('is_fired', inplace=True)
+    dates_features = ['startDate', 'endDate', 'birthDates']
 
     for i in dates_features:
         df[i].fillna(pd.Timestamp('now'), inplace=True)
         df[i] = pd.to_datetime(
             df[i],
-            format='%d/%m/%Y'
+            format='%Y-%m-%d'
         )
+    df['age'] = pd.Timestamp('now')-df['birthDates']
     df['season'] = df['endDate'].dt.month.apply(lambda x: season(x))
     df['workingPeriod'] = (df['endDate'] - df['startDate']).dt.days
     df.drop(dates_features, axis=1, inplace=True)
@@ -66,7 +70,7 @@ if __name__=='__main__':
         def __init__(self,
                      id,
                      speciality,
-                     age,
+                     birthDate,
                      education,
                      gender,
                      is_married,
@@ -82,7 +86,7 @@ if __name__=='__main__':
                      ):
             self.id = id
             self.speciality = speciality
-            self.age = age
+            self.birthDate = birthDate
             self.education = education
             self.gender = gender
             self.is_married = is_married
