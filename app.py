@@ -2,8 +2,6 @@ import typing as tp
 
 from fastapi import FastAPI
 
-from modules.utils.ml import BaseClassifier
-
 api = FastAPI()
 
 fake_data = [
@@ -21,18 +19,24 @@ fake_data = [
 
 
 @api.get("/api/employees")
-async def filter_employees(start: tp.Optional[int], end: tp.Optional[int]):
-    if not start or not end:
-        return fake_data
-    result: tp.List[tp.Dict[str, tp.Any]] = []
-    for data in fake_data:
-        if start <= data["salary"] <= end:
-            result.append(data)
+async def get_employees():
+    return await MongoDbWrapper().get_all_employees()
+
+
+@api.post("/api/employees/filter")
+async def filter_employees(filter: FilteringClass):
+    result = await MongoDbWrapper().get_matching_employees(dict(filter))
     predictions = BaseClassifier.predict(result)
     return [(result[i], predictions[i]) for i in range(len(result))]
 
 
 @api.post("/api/employees")
-async def create_employee(id: str, speciality: str, salary: int):
-    fake_data.append({"id": id, "speciality": speciality, "salary": salary})
-    return {"id": id, "speciality": speciality, "salary": salary}
+async def create_employee(employee: EmployeeEntry):
+    data = dict(employee)
+    fake_data.append(data)
+    return data
+
+
+@api.patch("/api/employee")
+async def patch_employee_data(employee_id: str, new_data: EmployeeEntry):
+    pass
