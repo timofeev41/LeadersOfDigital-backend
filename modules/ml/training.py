@@ -158,5 +158,6 @@ if __name__ == "__main__":
                               )
     employees = [instance, instance2, instance3]
 
-    # employees = [instance, instance2, instance3]
+    employees = [instance, instance2, instance3]
     train(employees)
+
