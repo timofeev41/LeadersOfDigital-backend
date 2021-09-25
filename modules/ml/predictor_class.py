@@ -1,7 +1,8 @@
 from joblib import load
 import pandas as pd
 import numpy as np
-from .training import preprocess
+#from .training import preprocess
+from training import preprocess
 
 # some_data_passed
 
@@ -23,9 +24,9 @@ class Analitics:
         df2 = self.preprocess(df2)
         X = df2.drop("workingPeriod", axis=1)
 
-        start_dates = pd.to_datetime(pd.Series(self.df["startDate"].values, index=self.df.index), format="%Y-%m-%d")
+        start_dates = pd.to_datetime(pd.Series(self.df["startDate"].values, index=self.df.index), format="%d/%m/%Y")
 
-        predictions = self.model.predict(X)
+        predictions = np.round(self.model.predict(X))
 
         left_days = (
             (
@@ -35,4 +36,9 @@ class Analitics:
             ).dt.days
         ).apply(lambda x: max(x, 0))
 
-        return left_days
+        return left_days.values
+
+
+
+
+predictor = Analitics(employees)
