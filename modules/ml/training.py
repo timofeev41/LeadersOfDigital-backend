@@ -17,7 +17,7 @@ def season(x):
 
 def preprocess(df):
     # даты
-    dates_features = ["startDate", "endDate"]
+    dates_features = ["startDate", "endDate", "birthDate"]
 
     for i in dates_features:
         df[i].fillna(pd.Timestamp("now"), inplace=True)
