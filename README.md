@@ -44,9 +44,7 @@
 
 ### РАЗРАБОТЧИКИ
 
-<h4>Иванов Иван fullstack https://t.me/test@name1 </h4>
-<h4>Иванов Иван fullstack https://t.me/test@name1 </h4>
-<h4>Иванов Иван fullstack https://t.me/test@name1 </h4>
-<h4>Иванов Иван fullstack https://t.me/test@name1 </h4>
-
-
+<h4>Ольга Липина Data Scientist neon_alfa@mail.ru </h4>
+<h4>Тимофей Николаев back-end https://linktr.ee/timofeev41 </h4>
+<h4>Егор Баранов Team Lead/front-end t.me/kepler88d </h4>
+<h4>Хайрнасов Андрей  back-end andreyhigher@gmail.com </h4>
