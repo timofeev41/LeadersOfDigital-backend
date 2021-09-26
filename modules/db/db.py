@@ -35,7 +35,7 @@ class MongoDbWrapper(metaclass=SingletonMeta):
         mongo_client: AsyncIOMotorClient = AsyncIOMotorClient(mongo_client_url)
 
         self._database: AsyncIOMotorCursor = mongo_client["Hack"]
-        self._employees_data: AsyncIOMotorCollection = self._database["Employees_latest"]
+        self._employees_data: AsyncIOMotorCollection = self._database["Employees_reborn"]
 
     @staticmethod
     async def _remove_ids(cursor: AsyncIOMotorCursor) -> tp.List[tp.Dict[str, tp.Any]]:

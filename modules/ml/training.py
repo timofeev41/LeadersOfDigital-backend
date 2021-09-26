@@ -97,7 +97,7 @@ def preprocess(df):
     dates_features = ["startDate", "endDate", "birthDate"]
     for i in dates_features:
         df[i].fillna(pd.Timestamp("now"), inplace=True)
-        df[i] = pd.to_datetime(df[i], format="%d/%m/%Y")
+        # df[i] = pd.to_datetime(df[i], format="%d/%m/%Y")
     df["season"] = df["endDate"].dt.month.apply(lambda x: season(x))
     df["workingPeriod"] = (df["endDate"] - df["startDate"]).dt.days
     df["age"] = round((pd.Timestamp("now") - df["birthDate"]).dt.days / 365)  # .astype('<m8[Y]')
