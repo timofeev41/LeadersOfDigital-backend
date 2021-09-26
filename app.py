@@ -7,7 +7,6 @@ from modules.db.models.models import FilteringClass, EmployeeEntry
 from modules.ml.predictor_class import Analitics
 from modules.ml.training import train
 from starlette.middleware.cors import CORSMiddleware
-import random
 
 api = FastAPI()
 
@@ -30,8 +29,7 @@ async def get_employees(start: int = 0, count: int = 100) -> tp.List[tp.Dict[str
 @api.post("/api/employees/filter")
 async def filter_employees(filter: FilteringClass) -> tp.List[tp.Dict[str, tp.Any]]:
     result = await MongoDbWrapper().get_matching_employees(dict(filter))
-    # predictions: tp.List[int] = Analitics([EmployeeEntry(**_) for _ in result]).predict()
-    predictions = [random.randint(1, 5 * 1 << 10) for _ in range(0, len(result))]
+    predictions: tp.List[int] = Analitics([EmployeeEntry(**_) for _ in result]).predict()
     return [{"employee": result[i], "prediction": predictions[i]} for i in range(len(result))]
 
 
