@@ -10,7 +10,7 @@ from .training import preprocess
 
 class Analitics:
     def __init__(self, employees):
-        self.model = load("./modules/mlmodel.joblib")
+        self.model = load("./modules/ml/model.joblib")
         # self.model = model
         self.df = pd.DataFrame([vars(employee) for employee in employees])
         self.df.index = self.df.id
